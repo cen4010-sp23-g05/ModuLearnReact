@@ -97,3 +97,7 @@ app.get('/student/get_grades', function(req, res) {
     let grades = SQLQueries.GetGradesFromStudent(student_id);
     res.send(grades);
 });
+
+// INSERT INTO teacher (username, hashed_pw, first_name, last_name) values ("TeacherZero", "xxx", "Aproctoflecticus", "Blubberman");
+// INSERT INTO course (id, first_module_id, title, teacher_id, gradebook_id) values (1, 1, "Cool Course", "TeacherZero", 1);
+// INSERT INTO module (id, course_id, module_type, content_id) values (1, 1, 0, 0);
