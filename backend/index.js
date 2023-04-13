@@ -47,7 +47,15 @@ const SQLQueries = {
         JOIN grade_cell ON grade_cell.scp_id = student_course_profile.id
         JOIN module ON module.id = grade_cell.module_id;
         `
-    }
+    },
+    GetModuleFileLocation(module_id) {
+        return `
+        SELECT module.file_loc
+        FROM module
+        WHERE module.id = ${module_id};
+        `
+    },
+
 };
 
 var mysql = require("mysql");
@@ -70,27 +78,27 @@ function GetDataFromSQL(myQuery) {
 const express = require("express");
 const app = express();
 
-app.get('/get_modules', function(req, res) {
-    let student_id = req.params.student_id;
-    let lessons = GetDataFromSQL(SQLQueries.GetAllModulesOfTypeFromStudent(student_id, 0)),
-        assigns = GetDataFromSQL(SQLQueries.GetAllModulesOfTypeFromStudent(student_id, 1)),
-        assesss = GetDataFromSQL(SQLQueries.GetAllModulesOfTypeFromStudent(student_id, 2));
-
-    res.send({...lessons, ...assigns, ...assesss});
+app.get('/course/get_modules', function(req, res) {
+    let course_id = req.params.course_id;
+    let modules = GetDataFromSQL(SQLQueries.GetAllModulesInCourse(course_id));
+    res.send(modules);
 });
 
 app.get('/course/get_grades', function(req, res) {
     let course_id = req.params.course_id;
-    let grades = SQLQueries.GetAllGradesInCourse(course_id);
+    let grades = GetDataFromSQL(SQLQueries.GetAllGradesInCourse(course_id));
     res.send(grades);
 });
 
-app.get('/student/get_grades', function(req, res) {
+app.get('/student/get_grades_for_course', function(req, res) {
     let student_id = req.params.student_id;
-    let grades = SQLQueries.GetGradesFromStudent(student_id);
+    let course_id = req.params.course_id;
+    let grades = GetDataFromSQL(SQLQueries.GetGradesInCourseFromStudent(course_id, student_id));
     res.send(grades);
 });
 
-// INSERT INTO teacher (username, hashed_pw, first_name, last_name) values ("TeacherZero", "xxx", "Aproctoflecticus", "Blubberman");
-// INSERT INTO course (id, first_module_id, title, teacher_id, gradebook_id) values (1, 1, "Cool Course", "TeacherZero", 1);
-// INSERT INTO module (id, course_id, module_type, content_id) values (1, 1, 0, 0);
+app.get('/module/get_content', function(req, res) {
+    let module_id = req.params.module_id;
+    let file_loc = GetDataFromSQL(SQLQueries.GetModuleFileLocation(module_id));
+
+});
