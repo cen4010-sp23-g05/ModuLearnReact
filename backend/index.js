@@ -6,54 +6,47 @@
 const SQLQueries = {
     ModuleTypes: ["lesson", "assignment", "assessment"],
     GetAllStudentsInCourse(course_id) {
-        return `SELECT student.username, student.first_name, student.last_name 
-        FROM grade_cell 
-        JOIN student 
-        ON grade_cell.student_id = student.username 
-        WHERE grade_cell.course_id = ${course_id};`
+        return `
+        SELECT student.username, student.first_name, student.last_name
+        FROM student
+        JOIN student_course_profile ON student_course_profile.student_id = student.username
+        WHERE student_course_profile.course_id = ${course_id};
+        `
     },
     GetAllGradesInCourse(course_id) {
-        return `SELECT grade_cell.earned_points, grade_cell.total_points, grade_cell.student_id, grade_cell.module_id 
-        FROM grade_cell 
-        WHERE grade_cell.course_id = ${course_id};`;
+        return `
+        SELECT student_course_profile.student_id, grade_cell.module_id, grade_cell.earned_points, module.total_points
+        FROM student_course_profile
+        WHERE student_course_profile.course_id = ${course_id}
+        JOIN grade_cell ON grade_cell.scp_id = student_course_profile.id
+        JOIN module ON module.id = grade_cell.module_id;
+        `
     },
-    GetAllModulesOfTypeInCourse(course_id, module_type) {
-        if (module_type != 0 || module_type != 1 || module_type != 2) {
-            throw new Error("SQLQueries: Module type out of range.");
-        }
-        return `SELECT * FROM ${this.ModuleTypes[module_type]} JOIN module 
-        ON 
-            module.type = ${module_type} AND 
-            module.content_id = ${this.ModuleTypes[module_type]}.id 
-        WHERE module.course_id = ${course_id};`;
+    GetAllModulesInCourse(course_id) {
+        return `
+        SELECT module.id, module.module_type, module.optional, module.due_date, module.title 
+        FROM module
+        WHERE module.course_id = ${course_id};
+        `
     },
     GetAllCoursesFromStudent(student_id) {
-        return `SELECT * FROM course 
-        JOIN grade_cell ON grade_cell.course_id = course.id
-        JOIN student ON student.username = grade_cell.student_id
-        WHERE student_id = ${student_id};`;
-    },
-    GetAllModulesOfTypeFromStudent(student_id, module_type) {
-        if (module_type != 0 || module_type != 1 || module_type != 2) {
-            throw new Error("SQLQueries: Module type out of range.");
-        }
-        modName = this.ModuleTypes[module_type];
-
         return `
-        SELECT ${modName}.title, ${modName}.dueDate
-        FROM ${modName}
-        JOIN module ON module.content_id = ${modName}.id
-        JOIN grade_cell ON grade_cell.module_id = module.id
-        JOIN student ON student.username = grade_cell.student_id
-        WHERE student.username = ${student_id};
-        `;
+        SELECT course.id, course.title
+        FROM course
+        JOIN student_course_profile ON student_course_profile.course_id = course.id
+        WHERE student_course_profile.student_id = ${student_id};
+        `
     },
-    GetGradesFromStudent(student_id) {
+    GetGradesInCourseFromStudent(course_id, student_id) {
         return `
-        SELECT grade_cell.total_points, grade_cell.earned_points
-        FROM grade_cell
-        WHERE grade_cell.student_id = ${student_id};
-        `;
+        SELECT grade_cell.module_id, grade_cell.earned_points, module.total_points, module.title
+        FROM student_course_profile
+        WHERE 
+            student_course_profile.course_id = ${course_id} AND
+            student_course_profile.student_id = ${student_id}
+        JOIN grade_cell ON grade_cell.scp_id = student_course_profile.id
+        JOIN module ON module.id = grade_cell.module_id;
+        `
     }
 };
 
