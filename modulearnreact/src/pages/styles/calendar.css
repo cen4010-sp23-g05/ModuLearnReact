@@ -1,0 +1,39 @@
+.calendar {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    border-radius: 5px;
+    width: 90%;
+    margin: 0 auto;
+    padding: 10px;
+  }
+  
+  .days-of-week {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 5px;
+  }
+  
+  .day {
+    font-weight: bold;
+  }
+  
+  .dates {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  
+  .date {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin-right: 5px;
+    font-size: 16px;
+  }
+  
