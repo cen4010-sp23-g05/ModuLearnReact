@@ -4,7 +4,7 @@ import Home from "./pages/Home";
 const App = () => (
     <BrowserRouter>
       <Routes>
-        <Route path="/pages/Home" component={Home}/>
+        <Route path="/" element={<Home/>}/>
       </Routes>
     </BrowserRouter>
   );
