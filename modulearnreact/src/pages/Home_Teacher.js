@@ -1,5 +1,6 @@
 import React from "react";
-import "./Styles/home.css";
+import { Link } from 'react-router-dom';
+import "./styles/home.css";
 
 function Home() {
   return (
@@ -8,8 +9,8 @@ function Home() {
       <nav>
         <div className="navbar">
           <div className="navbar-left">
-            <a href="#">Home</a>
-            <a href="#">Schedule</a>
+            <Link reloadDocument>Home</Link>
+            <Link to="./schedule">Schedule</Link>
             <a href="#">Class</a>
             <a href="#">Grades</a>
           </div>

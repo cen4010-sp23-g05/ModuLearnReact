@@ -1,6 +1,7 @@
-import React from "react";
-import moment from "moment";
 import "./styles/calendar.css";
+
+import React from "react";
+var moment = require("moment");
 
 function Calendar() {
   // Generate a list of days of the week
