@@ -58,6 +58,7 @@ const SQLQueries = {
 
 };
 
+// MySQL stuff
 var mysql = require("mysql");
 var con = mysql.createConnection({
     host: "localhost",
@@ -74,22 +75,39 @@ function GetDataFromSQL(myQuery) {
         return(result);
     });
 }
+// File system for loading files
+var fs = require('fs');
 
+// Express
 const express = require("express");
 const app = express();
 
+// ------------
+// GET REQUESTS
+// ------------
+
+// Sends the information of all modules in a course as a JSON object to the client
 app.get('/course/get_modules', function(req, res) {
     let course_id = req.params.course_id;
     let modules = GetDataFromSQL(SQLQueries.GetAllModulesInCourse(course_id));
     res.send(modules);
 });
 
+// Sends the grades of all students in a course as a JSON object to the client
 app.get('/course/get_grades', function(req, res) {
     let course_id = req.params.course_id;
     let grades = GetDataFromSQL(SQLQueries.GetAllGradesInCourse(course_id));
     res.send(grades);
 });
 
+// Sends all courses a student is currently in as a JSON object
+app.get('/student/courses', function(req, res) {
+    let student_id = req.params.student_id;
+    let courses = GetDataFromSQL(SQLQueries.GetAllCoursesFromStudent(student_id));
+    res.send(courses);
+});
+
+// Sends the grades of one student in a course as a JSON object to the client
 app.get('/student/get_grades_for_course', function(req, res) {
     let student_id = req.params.student_id;
     let course_id = req.params.course_id;
@@ -97,8 +115,15 @@ app.get('/student/get_grades_for_course', function(req, res) {
     res.send(grades);
 });
 
+// Sends the content of a module to the client
 app.get('/module/get_content', function(req, res) {
     let module_id = req.params.module_id;
-    let file_loc = GetDataFromSQL(SQLQueries.GetModuleFileLocation(module_id));
-
+    let file_loc = GetDataFromSQL(SQLQueries.GetModuleFileLocation(module_id))[0].file_loc;
+    const data = fs.readFileSync(file_loc);
+    res.send(data);
 });
+
+// ------------
+// SET REQUESTS
+// ------------
+
