@@ -22,7 +22,7 @@ function Home() {
             <Link reloadDocument>Home</Link>
             <Link to="./schedule">Schedule</Link>
             <a href="#">Class</a>
-            <a href="#">Grades</a>
+            <Link to="./grades">Grades</Link>
           </div>
           <div className="navbar-right">
             <button>Log Out</button>
