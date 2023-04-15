@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from 'react-router-dom';
 import "./styles/home.css";
 
-function Home() {
+function HomeTeacher() {
   return (
     <>
       {/* Navigation Bar */}
@@ -51,4 +51,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default HomeTeacher;

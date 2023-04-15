@@ -42,7 +42,7 @@ function Home() {
             <Link to="./grades">Grades</Link>
           </div>
           <div className="navbar-right">
-            <button>Log Out</button>
+            <button onClick={() => window.location.href = "./login"}>Log Out</button>
             <button>My Profile</button>
           </div>
         </div>
@@ -59,12 +59,12 @@ function Home() {
       {/* Class Boxes */}
       <div className="classes-container">
         {classes.map(course => {
-          return (<div key={course.id}>
+          return (<div key={course.id} style={{width:"95vw"}}>
             <h3>{course.title}</h3>
-            <div id={course.id} style={{ border: "2px solid black", padding: "10px", height: "80px", width: "100%", display:"flex", flexDirection:"row", justifyContent:"flex-start", alignItems:"baseline"}}>
+            <div id={course.id} style={{ border: "2px solid black", padding: "10px", marginBottom:"10px", height: "80px", width: "100%", display:"flex", flexDirection:"row", justifyContent:"flex-start", alignItems:"baseline"}}>
               {modules.map(module => {
                 if (module.course_id != course.id) return;
-                return (<div key={module.id} style={{margin:"2px", paddingRight: "10px"}}>
+                return (<div key={module.id} style={{ width:"15vw", height:"100%", border:"1px solid black", margin:"1px", paddingRight: "10px"}}>
                   <div>{module.title}</div>
                 </div>)
               })}

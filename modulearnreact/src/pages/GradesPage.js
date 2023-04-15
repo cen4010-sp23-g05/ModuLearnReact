@@ -4,6 +4,8 @@ import "./styles/gradespage.css";
 import { Button } from "react-bootstrap";
 
 function GradesPage() {
+  
+
   return (
     <>
       {/* Navigation Bar */}
