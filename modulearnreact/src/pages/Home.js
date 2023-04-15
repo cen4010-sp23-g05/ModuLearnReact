@@ -61,10 +61,10 @@ function Home() {
         {classes.map(course => {
           return (<div key={course.id}>
             <h3>{course.title}</h3>
-            <div id={course.id} style={{ border: "2px solid black", padding: "10px", height: "80px", width: "100%" }}>
+            <div id={course.id} style={{ border: "2px solid black", padding: "10px", height: "80px", width: "100%", display:"flex", flexDirection:"row", justifyContent:"flex-start", alignItems:"baseline"}}>
               {modules.map(module => {
                 if (module.course_id != course.id) return;
-                return (<div key={module.id} style={{height:"100%" ,display:"flex", flexDirection:"row", justifyContent:"flex-start", alignItems:"baseline"}}>
+                return (<div key={module.id} style={{margin:"2px", paddingRight: "10px"}}>
                   <div>{module.title}</div>
                 </div>)
               })}
