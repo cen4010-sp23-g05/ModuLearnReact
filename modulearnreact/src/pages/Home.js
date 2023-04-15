@@ -1,8 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from 'react-router-dom';
 import "./styles/home.css";
 
+const server_ip = "http://localhost:4000"
+
 function Home() {
+  //Get list of classes from the backend given a student id
+  fetch(server_ip + "/get_test")
+    .then(response => response.json())
+    .then(data => {
+
+    })
+    .catch(error => console.error(error));
+
   return (
     <>
       {/* Navigation Bar */}
@@ -34,6 +44,7 @@ function Home() {
         <div className="class">
           <h3>Calculus 2</h3>
           <div style={{ border: "2px solid black", padding: "10px", height: "80px", width: "100%" }}>
+
           </div>
         </div>
         <div className="class">

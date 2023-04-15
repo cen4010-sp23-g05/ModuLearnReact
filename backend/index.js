@@ -37,6 +37,14 @@ const SQLQueries = {
         WHERE student_course_profile.student_id = ${student_id};
         `
     },
+    GetAllModulesFromStudent(student_id) {
+        return `
+        SELECT module.course_id, module.id, module.module_type, module.optional, module.due_date, module.title, module.total_points
+        FROM module
+        JOIN student_course_profile ON module.course_id = student_course_profile.course_id
+        WHERE student_course_profile.student_id = ${student_id};
+        `
+    },
     GetGradesInCourseFromStudent(course_id, student_id) {
         return `
         SELECT grade_cell.module_id, grade_cell.earned_points, module.total_points, module.title
@@ -82,6 +90,12 @@ var fs = require('fs');
 const express = require("express");
 const app = express();
 
+// CORS for debugging
+const cors = require('cors');
+app.use(cors({
+    origin: "http://localhost:3000"
+}));
+
 // ------------
 // GET REQUESTS
 // ------------
@@ -115,6 +129,13 @@ app.get('/student/get_grades_for_course', function(req, res) {
     res.send(grades);
 });
 
+// Sends the modules of all courses a student is in as a JSON object to the client
+app.get('student/get_modules', function(req, res) {
+    let student_id = req.params.student_id;
+    let modules = GetDataFromSQL(SQLQueries.GetAllModulesFromStudent(student_id));
+    res.send(modules);
+});
+
 // Sends the content of a module to the client
 app.get('/module/get_content', function(req, res) {
     let module_id = req.params.module_id;
@@ -123,7 +144,24 @@ app.get('/module/get_content', function(req, res) {
     res.send(data);
 });
 
+app.get('/get_test', cors(), function(req, res) {
+    console.log("Received call to the test case");
+    res.send({
+        "sample": "data"
+    });
+});
+
 // ------------
 // SET REQUESTS
 // ------------
 
+
+
+
+// -----------
+// FINAL STEPS
+// -----------
+
+app.listen(4000, () => {
+    console.log("Server started on port 4000.");
+});
