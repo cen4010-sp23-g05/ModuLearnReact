@@ -1,17 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
 import "./styles/home.css";
 
 const server_ip = "http://localhost:4000"
 
 function Home() {
-  //Get list of classes from the backend given a student id
-  fetch(server_ip + "/get_test")
-    .then(response => response.json())
-    .then(data => {
+  const [classes, set_classes] = useState([]);
+  const [modules, set_modules] = useState([]);
 
-    })
-    .catch(error => console.error(error));
+  useEffect(() =>  {
+    fetch(server_ip + "/test/student/courses")
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        console.log(data);
+        set_classes(data);
+      })
+      .catch(error => console.error(error));
+
+    fetch(server_ip + "/test/student/get_modules")
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        console.log(data);
+        set_modules(data);
+      })
+      .catch(error => console.error(error));
+  }, []);
 
   return (
     <>
@@ -41,22 +58,19 @@ function Home() {
 
       {/* Class Boxes */}
       <div className="classes-container">
-        <div className="class">
-          <h3>Calculus 2</h3>
-          <div style={{ border: "2px solid black", padding: "10px", height: "80px", width: "100%" }}>
-
-          </div>
-        </div>
-        <div className="class">
-          <h3>Physics 1</h3>
-          <div style={{ border: "2px solid black", padding: "10px", height: "80px", width: "100%" }}>
-          </div>
-        </div>
-        <div className="class">
-          <h3>Introduction to Psychology</h3>
-          <div style={{ border: "2px solid black", padding: "10px", height: "80px", width: "100%" }}>
-          </div>
-        </div>
+        {classes.map(course => {
+          return (<div key={course.id}>
+            <h3>{course.title}</h3>
+            <div id={course.id} style={{ border: "2px solid black", padding: "10px", height: "80px", width: "100%" }}>
+              {modules.map(module => {
+                if (module.course_id != course.id) return;
+                return (<div key={module.id} style={{height:"100%" ,display:"flex", flexDirection:"row", justifyContent:"flex-start", alignItems:"baseline"}}>
+                  <div>{module.title}</div>
+                </div>)
+              })}
+            </div>
+          </div>)
+        })}
       </div>
     </>
   );

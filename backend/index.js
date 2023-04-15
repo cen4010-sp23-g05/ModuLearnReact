@@ -144,12 +144,70 @@ app.get('/module/get_content', function(req, res) {
     res.send(data);
 });
 
-app.get('/get_test', cors(), function(req, res) {
+// tests
+
+app.get('/test/get_test', cors(), function(req, res) {
     console.log("Received call to the test case");
     res.send({
         "sample": "data"
     });
 });
+
+app.get("/test/student/courses", cors(), function(req, res) {
+    console.log("Received test call to /test/student/courses");
+    res.send(
+        [
+            {"id" : 0, "title" : "calculus 3"},
+            {"id" : 1, "title" : "history of history"},
+            {"id" : 2, "title" : "discrete computational theory of mathematics"},
+        ]
+    );
+});
+
+app.get('/test/student/get_modules', function(req, res) {
+    console.log("Received test call to /test/student/get_modules");
+    res.send(
+        [
+            {
+              "course_id": 1,
+              "id": 1,
+              "module_type": 0,
+              "optional": false,
+              "due_date": "2022-05-01",
+              "title": "Homework 1",
+              "total_points": 50
+            },
+            {
+              "course_id": 1,
+              "id": 2,
+              "module_type": 1,
+              "optional": true,
+              "due_date": "2022-05-15",
+              "title": "Quiz 1",
+              "total_points": 20
+            },
+            {
+              "course_id": 2,
+              "id": 3,
+              "module_type": 1,
+              "optional": false,
+              "due_date": "2022-06-01",
+              "title": "Homework 2",
+              "total_points": 50
+            },
+            {
+              "course_id": 2,
+              "id": 4,
+              "module_type": 2,
+              "optional": false,
+              "due_date": "2022-06-15",
+              "title": "Midterm Exam",
+              "total_points": 100
+            }
+          ]
+          
+    );
+})
 
 // ------------
 // SET REQUESTS
