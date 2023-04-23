@@ -22,8 +22,8 @@ function Registration() {
           </select>
         </div>
         <div>
-          <button type="button" onClick={() => window.location.href = '/login'}>cancel</button>
-          <button type="submit" onClick={() => window.location.href = '/login'}>create</button>
+          <button type="button" onClick={() => window.location.href = './'}>cancel</button>
+          <button type="submit" onClick={() => window.location.href = './'}>create</button>
         </div>
       </form>
     </div>

@@ -169,7 +169,7 @@ app.get('/test/student/get_modules', function(req, res) {
     res.send(
         [
             {
-              "course_id": 1,
+              "course_id": 0,
               "id": 1,
               "module_type": 0,
               "optional": false,

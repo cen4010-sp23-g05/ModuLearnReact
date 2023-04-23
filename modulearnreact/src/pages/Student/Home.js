@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
-import "./styles/home.css";
+import "../styles/home.css";
 
 const server_ip = "http://localhost:4000"
 
@@ -37,12 +37,12 @@ function Home() {
         <div className="navbar">
           <div className="navbar-left">
             <Link reloadDocument>Home</Link>
-            <Link to="./schedule">Schedule</Link>
+            <Link to="./student/schedule">Schedule</Link>
             <a href="#">Class</a>
-            <Link to="./grades">Grades</Link>
+            <Link to="./student/grades">Grades</Link>
           </div>
           <div className="navbar-right">
-            <button onClick={() => window.location.href = "./login"}>Log Out</button>
+            <button onClick={() => window.location.href = "../"}>Log Out</button>
             <button>My Profile</button>
           </div>
         </div>

@@ -17,7 +17,7 @@ const Enroll = () => {
         </div>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <button type="button" onClick={() => window.location.href='./welcome.html'}>cancel</button>
+            <button type="button" onClick={() => window.location.href='./login'}>cancel</button>
             <button type="submit">join</button>
           </div>
         </div>

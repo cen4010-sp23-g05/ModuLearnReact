@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "./styles/gradespage.css";
+import "../styles/gradespage.css";
 import { Button } from "react-bootstrap";
 
 function GradesPage() {
@@ -31,7 +31,7 @@ function GradesPage() {
             <div className="studentPageLeftTopContentImage">
               <img
                 className="userProfileImageLeft"
-                src={require("./resources/AI-stock-image.jpg")}
+                src={require("../resources/AI-stock-image.jpg")}
                 alt="Online Education Image"
               />
             </div>
