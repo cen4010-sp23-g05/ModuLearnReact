@@ -42,14 +42,14 @@ function Home() {
             <Link to="./student/grades">Grades</Link>
           </div>
           <div className="navbar-right">
-            <button onClick={() => window.location.href = "../"}>Log Out</button>
-            <button>My Profile</button>
+            <button onClick={() => window.location.href = "../"} class="rounded m-1">Log Out</button>
+            <button class="rounded m-1">My Profile</button>
           </div>
         </div>
       </nav>
 
       {/* User Information */}
-      <div className="profile-container">
+      <div className="profile-container m-5">
         <div className="profile-pic"></div>
         <div className="welcome-message">
           <h3>Welcome back, John Doe</h3>
