@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 
+// LOCAL TESTING REMOVE LATER
+const server_ip = "http://localhost:4000";
 
 function CreateClass() {
 
@@ -10,15 +12,41 @@ function CreateClass() {
   const [summary, setSummary] = useState("");  
 
   function submitClass() {
-
-    console.log(inviteCode);
-    console.log(className);
-    console.log(summary);
     //Write code to submit the following to the sql db:
     //inviteCode, className, summary
-
+    useEffect(() =>  { 
+      // Send POST request to server 
+      fetch(server_ip + '/teacher/create_course', {
+        method: 'POST',
+        headers: {
+          'Content-Type' : 'application/json'
+        },
+        body: JSON.stringify({
+          inviteCode: inviteCode,
+          course_title : className,
+          summary   : summary, // !!! NOT STORED IN DB !!!
+          teacher_id: localStorage.getItem('username')
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) OnValidInviteCode();
+          else OnDuplicateInviteCode();
+        })
+        .catch(error => console.error(error))
+      });
+    });
   
   } 
+
+  // Add code which brings user to next page
+  function OnValidInviteCode() {
+
+  }
+
+  // Add code which tells user to make a different invite code
+  function OnDuplicateInviteCode() {
+
+  }
 
   return (
     <>

@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
 import "../styles/home.css";
 
-const server_ip = "http://localhost:4000"
+// LOCAL TESTING REMOVE LATER
+const server_ip = "http://localhost:4000";
 
 function Home() {
   const [classes, set_classes] = useState([]);

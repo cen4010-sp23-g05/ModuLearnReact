@@ -1,6 +1,57 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+
+// LOCAL TESTING REMOVE LATER
+const server_ip = "http://localhost:4000";
 
 function Login() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  function StudentLogin() {
+    Login("/student/login", (data) => {
+      // switch to student home page
+    });
+  }
+
+  function TeacherLogin() {
+    Login("/teacher/login", (data) => {
+      // switch to teacher home page
+    });
+  }
+
+  function Login(type, responseFunc) {
+    useEffect(() => {
+      fetch(server_ip + type, {
+        method: 'GET',
+        headers: {
+          'Content-Type' : 'application/json'
+        },
+        body: JSON.stringify({
+          username: username,
+          password: password
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (!data.bUsername) OnInvalidUsername();
+          else if (!data.bPassword) OnInvalidPassword();
+          else {
+            localStorage.setItem('username', username);
+            responseFunc(data);
+          }
+        })
+        .catch(error => console.error(error))
+      });
+    });
+  }
+
+  function OnInvalidUsername() {
+
+  }
+
+  function OnInvalidPassword() {
+
+  }
+
   return (
     
       
@@ -15,7 +66,7 @@ function Login() {
           <div class="col-sm-5"></div>
 
 
-          <input type="text" id="username" name="username" placeholder="username" class="col-sm-2 text-center m-1"/>
+          <input type="text" id="username" name="username" placeholder="username" class="col-sm-2 text-center m-1" onChange={(e) => setUsername(e.target.value)}/>
           <div class="col-sm-5"></div>
         </div>
         <div class="row text-center">
@@ -25,10 +76,10 @@ function Login() {
         </div>
         <div className="login-button">
           
-          <button onClick={() => window.location.href = "./student" } class="rounded col m-1">Log In (Student)</button>
+          <button onClick={() => StudentLogin() } class="rounded col m-1">Log In (Student)</button>
           
           
-          <button onClick={() => window.location.href = "./teacher"} class="rounded col m-1">Log In (Teacher)</button>
+          <button onClick={() => TeacherLogin()} class="rounded col m-1">Log In (Teacher)</button>
           
           <div class="col-sm-4"></div>
         </div>
