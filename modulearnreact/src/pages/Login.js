@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
+import ReactDOM from 'react-dom';
 
 // LOCAL TESTING REMOVE LATER
 const server_ip = "http://localhost:4000";
-
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -44,13 +44,15 @@ function Login() {
     });
   }
 
+  const [failedUsername, setFailedUsername] = useState(false);
   // Display that the username was incorrect
   function OnInvalidUsername() {
-    
+    setFailedUsername(true);
   }
-
+  const [failedPassword, setFailedPassword] = useState(false);
   // Display that the password was incorrect
   function OnInvalidPassword() {
+    setFailedPassword(true);
     
   }
 
@@ -63,7 +65,10 @@ function Login() {
       <div>
         
 
-        
+        <div className="error-message">
+        {failedUsername && <p style={{color: 'red'}}>The username was incorrect, please try again!</p>}
+        {failedPassword && <p style={{color: 'red'}}>The password was incorrect, please try again!</p>}
+        </div>
         <div class="row">
           <div class="col-sm-5"></div>
 
@@ -77,7 +82,8 @@ function Login() {
           <div class="col-sm-5"></div>
         </div>
         <div className="login-button">
-          
+        <button onClick={() => OnInvalidUsername() } class="rounded col m-1">Test Failed Username </button>
+        <button onClick={() => OnInvalidPassword() } class="rounded col m-1">Test Failed Password  </button>
           <button onClick={() => StudentLogin() } class="rounded col m-1">Log In (Student)</button>
           
           
