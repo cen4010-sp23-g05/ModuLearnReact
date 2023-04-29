@@ -5,7 +5,7 @@
 
 const SQLQueries = {
     ModuleTypes: ["lesson", "assignment", "assessment"],
-    // GET
+    // SELECT
     GetAllStudentsInCourse(course_id) {
         return `
         SELECT student.username, student.first_name, student.last_name
@@ -71,19 +71,36 @@ const SQLQueries = {
         WHERE course.id = ${course_id};
         `
     },
+    GetUser(tableName, username) {
+        return `
+        SELECT * 
+        FROM tableName
+        WHERE username = ${username}
+        `
+    },
     GetHashedPWFromUser(tableName, id) {
+        if (tableName != "student" && tableName != "teacher") return;
+
         return `
         SELECT hashed_pw
         FROM ${tableName}
-        WHERE id = ${id};
+        WHERE username = ${id};
         `
     },
 
-    // UPDATE TABLE
+    // INSERT
     AddCourse(course_id, course_title, teacher_id) {
         return `
         INSERT INTO course
         VALUES (${course_id}, ${course_title}, ${teacher_id});
+        `
+    },
+    AddUser(tableName, username, hashed_pw, first_name, last_name) {
+        if (tableName != "student" && tableName != "teacher") return;
+        
+        return `
+        INSERT INTO ${tableName}
+        VALUES (${username}, ${hashed_pw}, ${first_name}, ${last_name})
         `
     },
 };
@@ -272,6 +289,40 @@ app.get('/test/student/get_modules', function(req, res) {
 // POST REQUESTS
 // ------------
 
+app.post('/student/create', (req, res) => {
+    let userData = QuerySQL(SQLQueries.GetUser("student", req.body.username));
+    if (userData.length != 0) {
+        res.json({bUsername: false});
+        return;
+    }
+
+    QuerySQL(SQLQueries.AddUser(
+        "student", 
+        req.body.username,
+        HashPassword(req.body.password),
+        req.body.first_name,
+        req.body.last_name
+    ));
+    res.json({bUsername: true});
+});
+
+app.post('/teacher/create', (req, res) => {
+    let userData = QuerySQL(SQLQueries.GetUser("teacher", req.body.username));
+    if (userData.length != 0) {
+        res.json({bUsername: false});
+        return;
+    }
+
+    QuerySQL(SQLQueries.AddUser(
+        "teacher", 
+        req.body.username,
+        HashPassword(req.body.password),
+        req.body.first_name,
+        req.body.last_name
+    ));
+    res.json({bUsername: true});
+});
+
 app.post('/teacher/create_course', (req, res) => {
     let course_id = CreateInviteHash(req.body.inviteCode);
     let course_data = QuerySQL(SQLQueries.GetCourse(course_id));
@@ -293,6 +344,14 @@ app.post('/teacher/create_module', (req, res) => {
 // -----------
 // FINAL STEPS
 // -----------
+
+con.connect((err) => {
+    if (err) {
+        console.error('Error connecting to the database:', err);
+        return;
+      }
+    console.log('Connected to the database');
+})
 
 app.listen(4000, () => {
     console.log("Server started on port 4000.");

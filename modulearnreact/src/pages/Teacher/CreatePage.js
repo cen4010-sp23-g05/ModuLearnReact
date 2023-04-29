@@ -11,7 +11,7 @@ function CreateClass() {
   const [className, setClassName] = useState("");
   const [summary, setSummary] = useState("");  
 
-  function submitClass() {
+  function SubmitClass() {
     //Write code to submit the following to the sql db:
     //inviteCode, className, summary
     useEffect(() =>  { 
@@ -62,7 +62,7 @@ function CreateClass() {
         </div>
         <div style={{textAlign: 'center', marginTop: '20px'}}>
           <button className="rounded m-1 bg-danger" type="button" onClick={() => window.location.href='./welcome.html'}>cancel</button>
-          <button className="rounded m-1" type="submit" onClick={() => submitClass()}>create</button>
+          <button className="rounded m-1" type="submit" onClick={() => SubmitClass()}>create</button>
         </div>
       </div>
     </>
