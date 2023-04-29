@@ -73,7 +73,7 @@ function Login() {
         </div>
         <div class="row text-center">
           <div class="col-sm-5"></div>
-          <input type="password" id="password" name="password" placeholder="password" class="col-sm-2 text-center m-1"/>
+          <input type="password" id="password" name="password" placeholder="password" class="col-sm-2 text-center m-1" onChange={(e) => setPassword(e.target.value)}/>
           <div class="col-sm-5"></div>
         </div>
         <div className="login-button">
