@@ -14,8 +14,6 @@ function CreateClass() {
   const [summary, setSummary] = useState("");  
   let navigate = useNavigate();
 
-  function SubmitClass() {
-
 
   function SubmitClass() {
     //Write code to submit the following to the sql db:
