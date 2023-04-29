@@ -17,6 +17,7 @@ function CreateClass() {
   function SubmitClass() {
 
 
+  function SubmitClass() {
     //Write code to submit the following to the sql db:
     //inviteCode, className, summary
     useEffect(() =>  { 

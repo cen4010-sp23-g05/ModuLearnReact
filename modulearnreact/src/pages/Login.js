@@ -19,9 +19,9 @@ function Login() {
     });
   }
 
-  function Login(type, responseFunc) {
+  function Login(userType, responseFunc) {
     useEffect(() => {
-      fetch(server_ip + type, {
+      fetch(server_ip + userType, {
         method: 'GET',
         headers: {
           'Content-Type' : 'application/json'
