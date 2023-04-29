@@ -44,12 +44,14 @@ function Login() {
     });
   }
 
+  // Display that the username was incorrect
   function OnInvalidUsername() {
-
+    
   }
 
+  // Display that the password was incorrect
   function OnInvalidPassword() {
-
+    
   }
 
   return (
