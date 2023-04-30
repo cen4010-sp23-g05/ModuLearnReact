@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 
 function ViewAssignment() {
   const [description, setDescription] = useState('');
@@ -17,16 +16,9 @@ function ViewAssignment() {
     const formData = new FormData();
     formData.append('file', file);
 
-    try {
-      const response = await axios.post('/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      console.log(response.data); // or do something else with response
-    } catch (error) {
-      console.error(error);
-    }
+    return;
+
+    
   };
 
   return (

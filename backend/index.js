@@ -345,13 +345,15 @@ app.post('/teacher/create_module', (req, res) => {
 // FINAL STEPS
 // -----------
 
-con.connect((err) => {
-    if (err) {
-        console.error('Error connecting to the database:', err);
-        return;
-      }
-    console.log('Connected to the database');
-})
+if (false) {
+    con.connect((err) => {
+        if (err) {
+            console.error('Error connecting to the database:', err);
+            return;
+          }
+        console.log('Connected to the database');
+    })
+}
 
 app.listen(4000, () => {
     console.log("Server started on port 4000.");
