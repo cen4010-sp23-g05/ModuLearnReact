@@ -39,6 +39,10 @@ function Registration() {
     });
   }
 
+  function OnInvalidUsername() {
+
+  }
+
   // !!!
   // ADD FIRST NAME, LAST NAME BOXES
   // !!!
