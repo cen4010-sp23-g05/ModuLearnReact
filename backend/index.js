@@ -64,6 +64,13 @@ const SQLQueries = {
         WHERE module.id = ${module_id};
         `
     },
+    GetModuleInfo(module_id) {
+        return `
+        SELECT title, due_date, total_points
+        FROM module
+        WHERE id = ${module_id};
+        `
+    },
     GetCourse(course_id) {
         return `
         SELECT * 
@@ -74,7 +81,7 @@ const SQLQueries = {
     GetUser(tableName, username) {
         return `
         SELECT * 
-        FROM tableName
+        FROM ${tableName}
         WHERE username = ${username}
         `
     },
@@ -85,6 +92,12 @@ const SQLQueries = {
         SELECT hashed_pw
         FROM ${tableName}
         WHERE username = ${username};
+        `
+    },
+    GetAllModules() {
+        return `
+        SELECT *
+        FROM module;
         `
     },
 
@@ -100,9 +113,15 @@ const SQLQueries = {
         
         return `
         INSERT INTO ${tableName}
-        VALUES (${username}, ${hashed_pw}, ${first_name}, ${last_name})
+        VALUES (${username}, ${hashed_pw}, ${first_name}, ${last_name});
         `
     },
+    AddModule(module_id, course_id, module_type, optional, due_date, title, file_loc, total_points) {
+        return `
+        INSERT INTO module
+        VALUES (${module_id}, ${course_id}, ${module_type}, ${optional}, ${due_date}, ${title}, ${file_loc}, ${total_points});
+        `
+    }
 };
 
 // MySQL stuff
@@ -186,6 +205,11 @@ app.get('student/get_modules', function(req, res) {
     let student_id = req.params.student_id;
     let modules = QuerySQL(SQLQueries.GetAllModulesFromStudent(student_id));
     res.send(modules);
+});
+
+app.get('/module/get_info', (req, res) => {
+    let module_id = req.params.module_id;
+    res.send(QuerySQL(SQLQueries.GetModuleInfo(module_id))[0]);
 });
 
 // Sends the content of a module to the client
@@ -334,7 +358,14 @@ app.post('/teacher/create_course', (req, res) => {
 
 app.post('/teacher/create_module', (req, res) => {
     // Add handling
-    console.log();
+    let course_id = req.body.course_id,
+        content = req.body.content,
+        module_type = req.body.module_type;
+
+    let module_id = QuerySQL(SQLQueries.GetAllModules()).length;
+    fs.writeFile("/data/" + module_id.toString() + ".json", content, 'utf-8');
+
+    QuerySQL(SQLQueries.AddModule(module_id, course_id, module_type, false, "","","FILE_LOC",0))
 });
 
 // -----------

@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
 
 function CreateLesson() {
   const [textboxes, setTextboxes] = useState([]);
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const course_id = urlParams.get("course_id");
 
   const addTextbox = () => {
     setTextboxes([...textboxes, ""]);
@@ -19,14 +22,32 @@ function CreateLesson() {
     setTextboxes(newTextBoxes);
   };
 
-  const handleSubmit = (event) => {
+  const HandleSubmit = (event) => {
     event.preventDefault();
-    console.log(textboxes); // or send data to server or do other processing
+
+    useEffect(() => {
+      fetch("/teacher/create_module", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          content: textboxes,
+          course_id: course_id,
+          module_type: 0,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+          })
+          .catch((error) => console.error(error)),
+      });
+    });
   };
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={HandleSubmit}>
         {textboxes.map((textbox, index) => (
           <div key={index}>
             <input
@@ -39,11 +60,11 @@ function CreateLesson() {
             </button>
           </div>
         ))}
-        <div style={{width:"90vw", height:"100px", margin:"auto"}}>
-            <button type="button" onClick={addTextbox}>
-                Add Textbox
-            </button>
-            <button type="submit">Submit</button>
+        <div style={{ width: "90vw", height: "100px", margin: "auto" }}>
+          <button type="button" onClick={addTextbox}>
+            Add Textbox
+          </button>
+          <button type="submit">Submit</button>
         </div>
       </form>
     </div>

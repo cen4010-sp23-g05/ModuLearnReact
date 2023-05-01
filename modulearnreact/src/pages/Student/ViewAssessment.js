@@ -1,30 +1,32 @@
-import React, { useState } from 'react';
-import CreateAssessment from '../Teacher/CreateAssessment';
+import React, { useState, useEffect } from "react";
 
 function ViewAssessment() {
   const [questions, setQuestions] = useState([]);
+  const [title, setTitle] = useState("");
+  const [dueDate, setDueDate] = useState("--:--");
+  const [totalPoints, setTotalPoints] = useState("");
 
-    // add code to download info
+  // add code to download info
+  const urlParams = new URLSearchParams(window.location.search);
+  const module_id = urlParams.get("module_id");
 
-  const loadSample = () => {
-    setQuestions([
-      {
-        question: 'What is the capital of France?',
-        answers: ['Paris', 'London', 'Berlin'],
-        correctAnswers: [0],
-      },
-      {
-        question: 'What is the largest planet in our solar system?',
-        answers: ['Mars', 'Jupiter', 'Saturn'],
-        correctAnswers: [1],
-      },
-      {
-        question: 'Who invented the telephone?',
-        answers: ['Alexander Graham Bell', 'Thomas Edison', 'Nikola Tesla'],
-        correctAnswers: [0],
-      },
-    ]);
-  };
+  useEffect(() => {
+    fetch(`/module/get_info/${module_id}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setTitle(data.tile);
+        setDueDate(data.due_date);
+        setTotalPoints(data.total_points);
+      })
+      .catch((error) => console.error(error));
+
+    fetch(`/module/get_content/${module_id}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setQuestions(data);
+      })
+      .catch((error) => console.error(error));
+  });
 
   const handleAnswerChange = (event, questionIndex, answerIndex) => {
     const newQuestions = [...questions];
@@ -43,36 +45,44 @@ function ViewAssessment() {
     setQuestions(newQuestions);
   };
 
-  const handleSubmit = (event) => {
+  const HandleSubmit = (event) => {
     event.preventDefault();
-    console.log(questions); // or send data to server or do other processing
+    console.log(questions);
   };
 
   return (
     <div>
-      <button type="button" onClick={loadSample}>
-        Load sample assessment
-      </button>
-      <form onSubmit={handleSubmit}>
-        {questions.map((question, questionIndex) => (
-          <div key={questionIndex}>
-            <p>{question.question}</p>
-            {question.answers.map((answer, answerIndex) => (
-              <div key={answerIndex}>
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={(question.selectedAnswers || []).includes(answerIndex)}
-                    onChange={(event) => handleAnswerChange(event, questionIndex, answerIndex)}
-                  />
-                  {answer}
-                </label>
-              </div>
-            ))}
-          </div>
-        ))}
-        <button type="submit">Submit answers</button>
-      </form>
+      <div>
+        <h1>{title}</h1>
+        <h2>{dueDate}</h2>
+        <h2>{totalPoints}</h2>
+      </div>
+      <div>
+        <form onSubmit={HandleSubmit}>
+          {questions.map((question, questionIndex) => (
+            <div key={questionIndex}>
+              <p>{question.question}</p>
+              {question.answers.map((answer, answerIndex) => (
+                <div key={answerIndex}>
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={(question.selectedAnswers || []).includes(
+                        answerIndex
+                      )}
+                      onChange={(event) =>
+                        handleAnswerChange(event, questionIndex, answerIndex)
+                      }
+                    />
+                    {answer}
+                  </label>
+                </div>
+              ))}
+            </div>
+          ))}
+          <button type="submit">Submit answers</button>
+        </form>
+      </div>
     </div>
   );
 }

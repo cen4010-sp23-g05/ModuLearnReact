@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
 
 function CreateAssessment() {
-  const [questions, setQuestions] = useState([{ question: '', answers: [], correctAnswers: [] }]);
+  const [questions, setQuestions] = useState([
+    { question: "", answers: [], correctAnswers: [] },
+  ]);
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const course_id = urlParams.get("course_id");
 
   const addQuestion = () => {
-    setQuestions([...questions, { question: '', answers: [], correctAnswers: [] }]);
+    setQuestions([
+      ...questions,
+      { question: "", answers: [], correctAnswers: [] },
+    ]);
   };
 
   const removeQuestion = (index) => {
@@ -16,7 +24,7 @@ function CreateAssessment() {
   const addAnswer = (questionIndex) => {
     const newQuestions = [...questions];
     if (newQuestions[questionIndex].answers.length < 9) {
-      newQuestions[questionIndex].answers.push('');
+      newQuestions[questionIndex].answers.push("");
       setQuestions(newQuestions);
     }
   };
@@ -55,14 +63,33 @@ function CreateAssessment() {
     setQuestions(newQuestions);
   };
 
-  const handleSubmit = (event) => {
+  const HandleSubmit = (event) => {
     event.preventDefault();
     console.log(questions); // or send data to server or do other processing
+
+    useEffect(() => {
+      fetch("/teacher/create_module", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          content: questions,
+          course_id: course_id,
+          module_type: 2,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+          })
+          .catch((error) => console.error(error)),
+      });
+    });
   };
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={HandleSubmit}>
         {questions.map((question, questionIndex) => (
           <div key={questionIndex}>
             <label>
@@ -80,14 +107,18 @@ function CreateAssessment() {
                   <input
                     type="text"
                     value={answer}
-                    onChange={(event) => handleAnswerChange(event, questionIndex, answerIndex)}
+                    onChange={(event) =>
+                      handleAnswerChange(event, questionIndex, answerIndex)
+                    }
                   />
                 </label>
                 <label>
                   <input
                     type="checkbox"
                     checked={question.correctAnswers.includes(answerIndex)}
-                    onChange={(event) => handleCheckboxChange(event, questionIndex, answerIndex)}
+                    onChange={(event) =>
+                      handleCheckboxChange(event, questionIndex, answerIndex)
+                    }
                   />
                   Correct answer
                 </label>
@@ -100,30 +131,29 @@ function CreateAssessment() {
                 </button>
               </div>
             ))}
-              <button
-                type="button"
-                onClick={() => addAnswer(questionIndex)}
-                disabled={question.answers.length === 9}
-              >
-                Add answer
-              </button>
-              <button
-                type="button"
-                onClick={() => removeQuestion(questionIndex)}
-                disabled={questions.length === 1}
-              >
-                Delete question
-              </button>
-            </div>
-          ))}
-          <button type="button" onClick={addQuestion}>
-            Add question
-          </button>
-          <button type="submit">Submit assessment</button>
-        </form>
-      </div>
-    );
-  }
-  
-  export default CreateAssessment;
-  
+            <button
+              type="button"
+              onClick={() => addAnswer(questionIndex)}
+              disabled={question.answers.length === 9}
+            >
+              Add answer
+            </button>
+            <button
+              type="button"
+              onClick={() => removeQuestion(questionIndex)}
+              disabled={questions.length === 1}
+            >
+              Delete question
+            </button>
+          </div>
+        ))}
+        <button type="button" onClick={addQuestion}>
+          Add question
+        </button>
+        <button type="submit">Submit assessment</button>
+      </form>
+    </div>
+  );
+}
+
+export default CreateAssessment;

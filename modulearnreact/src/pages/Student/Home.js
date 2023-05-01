@@ -7,7 +7,7 @@ function Home() {
   const [modules, set_modules] = useState([]);
 
   useEffect(() =>  {
-    fetch("/test/student/courses")
+    fetch("/student/courses")
       .then(response => {
         return response.json();
       })
@@ -17,7 +17,7 @@ function Home() {
       })
       .catch(error => console.error(error));
 
-    fetch("/test/student/get_modules")
+    fetch("/student/get_modules")
       .then(response => {
         return response.json();
       })

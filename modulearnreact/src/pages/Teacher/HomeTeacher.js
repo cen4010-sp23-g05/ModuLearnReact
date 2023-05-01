@@ -21,7 +21,25 @@ function HomeTeacher() {
     //fetch data of logged in user, assign the fields to userName, userProfileImage
     // Note that userProfileImage's useState has not been set up correctly yet.
 
+    fetch("/teacher/courses")
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        console.log(data);
+        setOwnedClasses(data);
+      })
+      .catch(error => console.error(error));
 
+    fetch("/teacher/get_modules")
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        console.log(data);
+        set_modules(data);
+      })
+      .catch(error => console.error(error));
 
   });
 

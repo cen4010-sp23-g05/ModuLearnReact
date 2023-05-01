@@ -110,7 +110,7 @@ function GradesPage() {
         </div>
 
         <div className="studentPageRightSide">
-          <div class="chart-container"></div>
+          <div className="chart-container"></div>
           <div className="studentPageRightContent">
             <div className="assignmentTableList">
               <div className="assignmentTableTitle">
