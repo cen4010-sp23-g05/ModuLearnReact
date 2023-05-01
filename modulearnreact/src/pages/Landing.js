@@ -3,6 +3,7 @@ import {Button} from 'react-bootstrap';
 import './styles/landing.css'
 import moduLearnLogo from './resources/moduLearnLogo.png'
 import clipBoardIcon from './resources/clipboard.webp' 
+import {Link} from 'react-router-dom';
 
 function Landing() {
   return (
@@ -34,8 +35,12 @@ function Landing() {
  </p>
 
  <div className="buttonContainer">
-        <Button className="landingButton" variant="primary" href="/login">Login</Button>
-        <Button className="landingButton" variant="primary" href="/registration">Register</Button>
+  <Link to="/login">
+        <Button className="landingButton" variant="primary">Login</Button>
+        </Link>
+        <Link to="/registration">
+        <Button className="landingButton" variant="primary">Register</Button>
+        </Link>
         </div>
           
         </div>
