@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-const server_ip = "http://localhost:4000";
-
 function Registration() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -16,7 +14,7 @@ function Registration() {
 
   function Register(responseFunc) {
     useEffect(() => {
-      fetch(server_ip + '/' + userType + '/create', {
+      fetch('/' + userType + '/create', {
         method: 'POST',
         headers: {
           'Content-Type' : 'application/json'

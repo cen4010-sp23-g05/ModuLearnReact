@@ -2,15 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
 import "../styles/home.css";
 
-// LOCAL TESTING REMOVE LATER
-const server_ip = "http://localhost:4000";
-
 function Home() {
   const [classes, set_classes] = useState([]);
   const [modules, set_modules] = useState([]);
 
   useEffect(() =>  {
-    fetch(server_ip + "/test/student/courses")
+    fetch("/test/student/courses")
       .then(response => {
         return response.json();
       })
@@ -20,7 +17,7 @@ function Home() {
       })
       .catch(error => console.error(error));
 
-    fetch(server_ip + "/test/student/get_modules")
+    fetch("/test/student/get_modules")
       .then(response => {
         return response.json();
       })
@@ -44,7 +41,7 @@ function Home() {
           </div>
           <div className="navbar-right">
             <button onClick={() => window.location.href = "../"} class="rounded m-1">Log Out</button>
-            <button class="rounded m-1">My Profile</button>
+            <button className="rounded m-1">My Profile</button>
           </div>
         </div>
       </nav>

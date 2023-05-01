@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from 'react-dom';
 
-// LOCAL TESTING REMOVE LATER
-const server_ip = "http://localhost:4000";
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -21,7 +19,7 @@ function Login() {
 
   function Login(userType, responseFunc) {
     useEffect(() => {
-      fetch(server_ip + userType, {
+      fetch(userType, {
         method: 'GET',
         headers: {
           'Content-Type' : 'application/json'

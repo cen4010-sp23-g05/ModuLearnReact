@@ -19,7 +19,7 @@ function GradesPage() {
 
   function loadProfile() {
     setLoading(true);
-    axios.get("localhost:3000/test/student/get_modules", {
+    axios.get("/test/student/get_modules", {
     }).then(function (response) {
         setStudentList(response.data.student);
         console.log(studentList);
