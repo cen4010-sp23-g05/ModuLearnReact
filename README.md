@@ -1,6 +1,6 @@
-# ModuLearnReact 🎓
+# CEN 4010 Project: ModuLearn 🎓
 
-ModuLearnReact is a comprehensive project that aims to create an interactive and immersive learning platform using React.
+ModuLearn is a comprehensive project that aims to create an interactive and immersive learning platform using React.
 
 ## Table of Contents
 
