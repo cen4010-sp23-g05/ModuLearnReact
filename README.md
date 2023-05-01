@@ -2,15 +2,6 @@
 
 ModuLearn is a comprehensive project that aims to create an interactive and immersive learning platform using React.
 
-## Table of Contents
-
-- [Milestones](#milestones)
-  - [Milestone 0](#milestone-0)
-  - [Milestone 1](#milestone-1)
-  - [Milestone 3](#milestone-3)
-  - [Milestone 4](#milestone-4)
-  - [Milestone 5](#milestone-5)
-
 ## Milestones
 
 ### Milestone 0
