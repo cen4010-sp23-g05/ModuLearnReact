@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "../styles/calendar.css";
+import { Link } from "react-router-dom";
 
 
 function Calendar() {
@@ -67,11 +68,11 @@ function Calendar() {
       {/* Navigation Bar */}
       <nav>
         <div className="navbar">
-          <div className="navbar-left">
-            <a href="#">Home</a>
-            <a href="#">Schedule</a>
+        <div className="navbar-left">
+            <Link to="/">Home</Link>
+            <Link to="">Schedule</Link>
             <a href="#">Class</a>
-            <a href="#">Grades</a>
+            <Link to="/student/grades">Grades</Link>
           </div>
           <div className="navbar-right">
             <button>Log Out</button>
