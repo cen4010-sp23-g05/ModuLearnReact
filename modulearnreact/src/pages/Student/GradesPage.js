@@ -1,10 +1,46 @@
-import React from "react";
+import {React, useState, useEffect} from "react";
 import { Link } from "react-router-dom";
 import "../styles/gradespage.css";
-import { Button } from "react-bootstrap";
+import { Button, Table } from "react-bootstrap";
+import { useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
 
 function GradesPage() {
-  
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  let [resonse, setResponse] = useState(null);
+  let [studentList, setStudentList] = useState("");
+  let [display_name, setDisplayName] = useState("");
+  let navigate = useNavigate();
+  let location = useLocation();
+
+
+
+
+  function loadProfile() {
+    setLoading(true);
+    axios.get("localhost:3000/test/student/get_modules", {
+    }).then(function (response) {
+        setStudentList(response.data.student);
+        console.log(studentList);
+        setResponse(response.data);
+        setError(null);
+        setLoading(false);
+        console.log(studentList);
+        // handle success
+    }).catch(function (error) {
+        // handle error
+        console.log(error);
+    })
+        .then(function (response) {
+        });
+}
+
+
+
+    useEffect(() => {
+        loadProfile();
+    }, []);
 
   return (
     <>
@@ -13,9 +49,9 @@ function GradesPage() {
         <div className="navbar">
           <div className="navbar-left">
             <Link to="/">Home</Link>
-            <Link to="/schedule">Schedule</Link>
+            <Link to="/student/schedule">Schedule</Link>
             <a href="#">Class</a>
-            <Link to="/grades">Grades</Link>
+            <Link to="/student/grades">Grades</Link>
           </div>
           <div className="navbar-right">
             <button>Log Out</button>
@@ -81,24 +117,34 @@ function GradesPage() {
                 <h1 className="assignmentTableTitleText">Assignments</h1>
               </div>
 
-              <table className="assignmentTable">
-                <tr>
-                  <th>Assignment</th>
-                  <th>Grade</th>
-                </tr>
-                <tr>
-                  <td>English Exam</td>
-                  <td>90%</td>
-                </tr>
-                <tr>
-                  <td>Science Homework</td>
-                  <td>96%</td>
-                </tr>
-                <tr>
-                  <td>Math Quiz</td>
-                  <td>100%</td>
-                </tr>
-              </table>
+              <Table className="assignmentTable"> 
+                    <tbody>
+                        
+                        {studentList && studentList.map(searchResults => {    
+                                     console.log(studentList);        
+                                     return (
+                        <tr>
+                            <td key={searchResults.id}>
+                                <div className="studentGrade" >
+                                <h1 className="studentGradeText"> {searchResults.due_date} </h1>
+                                </div>
+                            </td>
+                            <td>
+                        <h1 className="studentNameText">{searchResults.title}</h1>
+                        <div className="studentGradeLevel">
+                            <h1 className="studentGradeLevelText">{searchResults.total_points}</h1>
+
+                        </div>  
+                            </td>
+                            <td>
+                     </td>
+                     </tr>
+                            )
+                                    })}
+
+                    </tbody>
+                    </Table>
+
             </div>
           </div>
         </div>
