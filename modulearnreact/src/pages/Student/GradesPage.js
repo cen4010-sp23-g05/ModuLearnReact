@@ -49,9 +49,9 @@ function GradesPage() {
         <div className="navbar">
           <div className="navbar-left">
             <Link to="/">Home</Link>
-            <Link to="/schedule">Schedule</Link>
+            <Link to="/student/schedule">Schedule</Link>
             <a href="#">Class</a>
-            <Link to="/grades">Grades</Link>
+            <Link to="/student/grades">Grades</Link>
           </div>
           <div className="navbar-right">
             <button>Log Out</button>
