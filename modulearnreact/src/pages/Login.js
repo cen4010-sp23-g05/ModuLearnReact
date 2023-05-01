@@ -1,5 +1,8 @@
+import moduLearnLogo from './resources/moduLearnLogo.png'
 import React, { useState, useEffect } from "react";
-import ReactDOM from 'react-dom';
+import { Form, Button, Alert } from 'react-bootstrap';
+import './styles/login.css'
+import {Link, useNavigate} from "react-router-dom"
 
 // LOCAL TESTING REMOVE LATER
 const server_ip = "http://localhost:4000";
@@ -57,45 +60,84 @@ function Login() {
   }
 
   return (
-    
+    <div id="mainBox">
+      <div id="logo">
+        <img className="mainTitle" src={moduLearnLogo} alt="ModuLearnLogo" />
+      </div>
+
+<div className="signUpContainer">
+        <div id="signup">
+        <div id="title">
+          <h1>Teacher Log In</h1>
+        </div>
+          <div id="signup-form-div">
+  <Form onClick={TeacherLogin} id="signup-form">
+  <Form.Group className="mb-3">
+            <Form.Label>Username</Form.Label>
+              <Form.Control id="signup-user-email" type="text" placeholder="Enter username" value={username}
+                            onChange={(e) => { setUsername(e.target.value) }}
+              />
+</Form.Group>
+<Form.Group className="mb-3" >
+  <Form.Label>Password</Form.Label>
+   <Form.Control id= "signup-user-password"  type="password" placeholder="Password" value={password} 
+                 onChange={(e) => { setPassword(e.target.value) }}/>
+</Form.Group>
+<Button  type="submit">Submit</Button>
+
+
+
+<div id="signup-feedback"></div>
+</Form>
+<div className="alreadyHaveAccount">
+<Link to="/registration">
+<Button variant="primary">Don't have an account?</Button>   
+</Link>             
+</div>
+</div>
+</div>
+
+
+
+
+<div id="signup">
+        <div id="title">
+          <h1>Student Log In</h1>
+        </div>
+          <div id="signup-form-div">
+  <Form onClick={StudentLogin} id="signup-form">
+  <Form.Group className="mb-3">
+            <Form.Label>Username</Form.Label>
+              <Form.Control id="signup-user-email" type="text" placeholder="Enter username" value={username}
+                            onChange={(e) => { setUsername(e.target.value) }}
+              />
+</Form.Group>
+<Form.Group className="mb-3" >
+  <Form.Label>Password</Form.Label>
+   <Form.Control id= "signup-user-password"  type="password" placeholder="Password" value={password} 
+                 onChange={(e) => { setPassword(e.target.value) }}/>
+</Form.Group>
+<Button  type="submit">Submit</Button>
+
+
+<div id="signup-feedback"></div>
+</Form>
+<div className="alreadyHaveAccount">
+<Link to="/registration">
+<Button variant="primary">Don't have an account?</Button>   
+</Link>             
+</div>
+</div>
+</div>
+</div>
+</div>
       
 
-    <div style={{ textAlign: "center" }} class="container">
-      <h1 class="mt-5 mb-3">Welcome to ModuLearn</h1>
-      <div>
-        
+      //  <div className="error-message">
+       // {failedUsername && <p style={{color: 'red'}}>The username was incorrect, please try again!</p>}
+       // {failedPassword && <p style={{color: 'red'}}>The password was incorrect, please try again!</p>}
+      //  </div>
 
-        <div className="error-message">
-        {failedUsername && <p style={{color: 'red'}}>The username was incorrect, please try again!</p>}
-        {failedPassword && <p style={{color: 'red'}}>The password was incorrect, please try again!</p>}
-        </div>
-        <div class="row">
-          <div class="col-sm-5"></div>
-
-
-          <input type="text" id="username" name="username" placeholder="username" class="col-sm-2 text-center m-1" onChange={(e) => setUsername(e.target.value)}/>
-          <div class="col-sm-5"></div>
-        </div>
-        <div class="row text-center">
-          <div class="col-sm-5"></div>
-          <input type="password" id="password" name="password" placeholder="password" class="col-sm-2 text-center m-1" onChange={(e) => setPassword(e.target.value)}/>
-          <div class="col-sm-5"></div>
-        </div>
-        <div className="login-button">
-        <button onClick={() => OnInvalidUsername() } class="rounded col m-1">Test Failed Username </button>
-        <button onClick={() => OnInvalidPassword() } class="rounded col m-1">Test Failed Password  </button>
-          <button onClick={() => StudentLogin() } class="rounded col m-1">Log In (Student)</button>
-          
-          
-          <button onClick={() => TeacherLogin()} class="rounded col m-1">Log In (Teacher)</button>
-          
-          <div class="col-sm-4"></div>
-        </div>
-        <div className="register-button">
-          <button type="button" onClick={() => window.location.href = "./registration"}  class="rounded m-1">Register Account</button>
-        </div>
-      </div>
-    </div>
   );
 }
 
