@@ -78,13 +78,13 @@ const SQLQueries = {
         WHERE username = ${username}
         `
     },
-    GetHashedPWFromUser(tableName, id) {
+    GetHashedPWFromUser(tableName, username) {
         if (tableName != "student" && tableName != "teacher") return;
 
         return `
         SELECT hashed_pw
         FROM ${tableName}
-        WHERE username = ${id};
+        WHERE username = ${username};
         `
     },
 
@@ -197,28 +197,24 @@ app.get('/module/get_content', function(req, res) {
 });
 
 app.get('/student/login', (req, res) => {
-    let data = QuerySQL(SQLQueries.GetHashedPWFromUser("student", req.body.id));
-    if (data.length == 0) {
-        res.send({bUsername: false, bPassword: false});
-    }
-    if (data[0].hashed_pw == HashPassword(req.body.password)) {
-        res.send({bUsername: true, bPassword: true});
-    } else {
-        res.send({bUsername: true, bPassword: false});
-    }
+    res.send(LoginUser("student", req.body.id));
 });
 
 app.get('/teacher/login', (req, res) => {
-    let data = QuerySQL(SQLQueries.GetHashedPWFromUser("teacher", req.body.id));
+    res.send(LoginUser("teacher", req.body.id));
+});
+
+function LoginUser(userType, username) {
+    let data = QuerySQL(SQLQueries.GetHashedPWFromUser(userType, username));
     if (data.length == 0) {
-        res.send({bUsername: false, bPassword: false});
+        return {bUsername: false, bPassword: false};
     }
     if (data[0].hashed_pw == HashPassword(req.body.password)) {
-        res.send({bUsername: true, bPassword: true});
+        return {bUsername: true, bPassword: true};
     } else {
-        res.send({bUsername: true, bPassword: false});
+        return {bUsername: true, bPassword: false};
     }
-});
+}
 
 // tests
 
