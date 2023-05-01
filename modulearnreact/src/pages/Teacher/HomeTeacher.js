@@ -4,7 +4,7 @@ import "../styles/home.css";
 import { useState, useEffect } from "react";
 
 function HomeTeacher() {
-
+  const [modules, set_modules] = useState([]);
   const [ownedClasses, setOwnedClasses] = useState([]);
   const [userName, setUserName] = useState("");
   //const [userProfileImage, setUserProfileImage] = //useState...?
