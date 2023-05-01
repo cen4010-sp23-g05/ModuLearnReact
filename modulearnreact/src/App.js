@@ -16,11 +16,12 @@ import CreateAssessment from "./pages/Teacher/CreateAssessment";
 import ViewLesson       from './pages/Student/ViewLesson';
 import ViewAssignment   from './pages/Student/ViewAssignment';
 import ViewAssessment   from './pages/Student/ViewAssessment';
-
+import Landing         from './pages/Landing';
 const App = () => (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Login/>}/>
+      <Route path="/" element={<Landing/>}/>
+        <Route path="/login" element={<Login/>}/>
         <Route path="/registration" element={<Registration/>}/>
 
         <Route path="/student" element={<Home/>}/>

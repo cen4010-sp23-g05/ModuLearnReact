@@ -1,0 +1,73 @@
+.landingMain {
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 86vh; 
+    width: 100vw;
+  }
+  
+
+  
+  .landingPageImage{
+    width: 19vw;
+    height: 40vh;
+  }
+  
+  .landingImageDiv{
+    padding-right: 10vw;
+    padding-top: 18vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+  }
+  
+  .buttonContainer{
+    margin-top: 5vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+  .landingButton{
+    margin-left: 10px;
+  }
+  .studentLists{
+    margin-left: 10vw;
+  }
+  
+  .landingPage {
+    display: flex;
+    flex-direction: row; 
+    align-content: center;
+    justify-content: space-evenly;
+  }
+  
+  .mainTitle{
+    font-size: 50px;
+    font-weight: bold;
+    color: black;
+    margin-bottom: 15px;
+    padding: 0px;
+  }
+  
+  .contentDetailedText{
+    font-size: 16px;
+    width: 30vw;
+    color: black;
+    margin: 0px;
+    padding: 0px; 
+    text-align: justify;
+  }
+  
+  .rightSideContent{
+    display: flex;
+    flex-direction: column;
+    margin-top: 13vh;
+  }
+  
+  .letsGoButton{
+    
+  }
