@@ -7,20 +7,40 @@ function ViewAssessment() {
   const [totalPoints, setTotalPoints] = useState("");
 
   // add code to download info
-  const urlParams = new URLSearchParams(window.location.search);
-  const module_id = urlParams.get("module_id");
 
   useEffect(() => {
-    fetch(`/module/get_info/${module_id}`)
+    const urlParams = new URLSearchParams(window.location.search);
+    const module_id = urlParams.get("module_id");
+
+    fetch(`/test/module/get_info`, {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        module_id: module_id,
+      })
+    })
       .then((response) => response.json())
       .then((data) => {
-        setTitle(data.tile);
-        setDueDate(data.due_date);
-        setTotalPoints(data.total_points);
+        setTitle(data.title);
+        setDueDate("Due date: " + data.due_date);
+        setTotalPoints("Total points: " + data.total_points.toString());
       })
       .catch((error) => console.error(error));
 
-    fetch(`/module/get_content/${module_id}`)
+    fetch(`/test/module/get_content`, {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        module_id: module_id,
+        module_type: 2
+      })
+    })
       .then((response) => response.json())
       .then((data) => {
         setQuestions(data);

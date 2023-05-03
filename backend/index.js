@@ -148,6 +148,9 @@ var fs = require('fs');
 // Express
 const express = require("express");
 const app = express();
+const bodyParser = require("body-parser");
+app.use(bodyParser.urlencoded({extended:false}));
+app.use(bodyParser.json());
 
 // CORS for debugging
 const cors = require('cors');
@@ -173,48 +176,48 @@ function HashPassword(password) {
 
 // Sends the information of all modules in a course as a JSON object to the client
 app.get('/course/get_modules', function(req, res) {
-    let course_id = req.params.course_id;
+    let course_id = req.body.course_id;
     let modules = QuerySQL(SQLQueries.GetAllModulesInCourse(course_id));
     res.send(modules);
 });
 
 // Sends the grades of all students in a course as a JSON object to the client
 app.get('/course/get_grades', function(req, res) {
-    let course_id = req.params.course_id;
+    let course_id = req.body.course_id;
     let grades = QuerySQL(SQLQueries.GetAllGradesInCourse(course_id));
     res.send(grades);
 });
 
 // Sends all courses a student is currently in as a JSON object
 app.get('/student/courses', function(req, res) {
-    let student_id = req.params.student_id;
+    let student_id = req.body.student_id;
     let courses = QuerySQL(SQLQueries.GetAllCoursesFromStudent(student_id));
     res.send(courses);
 });
 
 // Sends the grades of one student in a course as a JSON object to the client
 app.get('/student/get_grades_for_course', function(req, res) {
-    let student_id = req.params.student_id;
-    let course_id = req.params.course_id;
+    let student_id = req.body.student_id;
+    let course_id = req.body.course_id;
     let grades = QuerySQL(SQLQueries.GetGradesInCourseFromStudent(course_id, student_id));
     res.send(grades);
 });
 
 // Sends the modules of all courses a student is in as a JSON object to the client
 app.get('student/get_modules', function(req, res) {
-    let student_id = req.params.student_id;
+    let student_id = req.body.student_id;
     let modules = QuerySQL(SQLQueries.GetAllModulesFromStudent(student_id));
     res.send(modules);
 });
 
 app.get('/module/get_info', (req, res) => {
-    let module_id = req.params.module_id;
+    let module_id = req.body.module_id;
     res.send(QuerySQL(SQLQueries.GetModuleInfo(module_id))[0]);
 });
 
 // Sends the content of a module to the client
 app.get('/module/get_content', function(req, res) {
-    let module_id = req.params.module_id;
+    let module_id = req.body.module_id;
     let file_loc = QuerySQL(SQLQueries.GetModuleFileLocation(module_id))[0].file_loc;
     const data = fs.readFileSync(file_loc);
     res.send(data);
@@ -253,9 +256,9 @@ app.get("/test/student/courses", cors(), function(req, res) {
     console.log("Received test call to /test/student/courses");
     res.send(
         [
-            {"id" : 0, "title" : "calculus 3"},
-            {"id" : 1, "title" : "history of history"},
-            {"id" : 2, "title" : "discrete computational theory of mathematics"},
+            {"id" : 0, "title" : "Calculus 2"},
+            {"id" : 1, "title" : "History of Histories"},
+            {"id" : 2, "title" : "Discrete computational theory of Mathematics & Linear Algebra"},
         ]
     );
 });
@@ -300,10 +303,120 @@ app.get('/test/student/get_modules', function(req, res) {
               "title": "Midterm Exam",
               "total_points": 100
             }
-          ]
-          
+        ]
     );
 });
+
+app.post('/test/module/get_content', function (req, res) {
+    switch (req.body.module_type) {
+        case 0:
+            lessonTest(res, req.body.module_id);
+            break;
+        case 1:
+            assignmentTest(res, req.body.module_id);
+            break;
+        case 2:
+            assessmentTest(res);
+            break;
+        default:
+            console.log("Invalid module type: " + req.body.module_type.toString());
+    }
+});
+
+app.post('/test/module/get_info', (req, res) => {
+    if (req.body.module_id > 4) {
+        console.log("Info ID was out of range!");
+    }
+
+    res.send(
+        ([
+            {
+              "course_id": 0,
+              "id": 1,
+              "module_type": 0,
+              "optional": false,
+              "due_date": "2023-05-01",
+              "title": "Lesson 1",
+              "total_points": 50
+            },
+            {
+              "course_id": 1,
+              "id": 2,
+              "module_type": 1,
+              "optional": true,
+              "due_date": "2023-05-15",
+              "title": "Quiz 1",
+              "total_points": 20
+            },
+            {
+              "course_id": 2,
+              "id": 3,
+              "module_type": 1,
+              "optional": false,
+              "due_date": "2023-06-01",
+              "title": "Homework 2",
+              "total_points": 50
+            },
+            {
+              "course_id": 2,
+              "id": 4,
+              "module_type": 2,
+              "optional": false,
+              "due_date": "2023-06-15",
+              "title": "Midterm Exam",
+              "total_points": 100
+            }
+        ])[req.body.module_id-1]
+    );
+});
+
+function lessonTest(res, module_id) {
+    if (module_id == 1) {
+        res.send([
+            { content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.' },
+            { content: 'Fusce consequat accumsan tellus, id tincidunt elit tempus ut.' },
+            { content: 'Cras vehicula, magna at auctor tincidunt, sapien turpis sodales odio, vel volutpat lorem magna sed metus.' },
+        ]);
+    } else {
+        res.send([
+            { content: 'This is some lesson content' },
+            { content: 'This is even more lesson content' },
+            { content: 'This is the most lesson content (that I can think of)' }
+        ])
+    }
+}
+
+function assignmentTest(res, module_id) {
+    if (module_id == 2) {
+        res.send({
+            content: "Assignment description"
+        });
+    } else {
+        res.send({
+            content: "A different assignment description"
+        })
+    }
+}
+
+function assessmentTest(res) {
+    res.send([
+        {
+          question: 'What is the capital of France?',
+          answers: ['Paris', 'London', 'Berlin'],
+          correctAnswers: [0],
+        },
+        {
+          question: 'What is the largest planet in our solar system?',
+          answers: ['Mars', 'Jupiter', 'Saturn'],
+          correctAnswers: [1],
+        },
+        {
+          question: 'Who invented the telephone?',
+          answers: ['Alexander Graham Bell', 'Thomas Edison', 'Nikola Tesla'],
+          correctAnswers: [0],
+        },
+    ]);
+}
 
 // ------------
 // POST REQUESTS

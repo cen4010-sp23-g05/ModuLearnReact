@@ -5,17 +5,37 @@ function ViewLesson() {
   const [title, setTitle] = useState("");
 
   // add code to download info
-  const urlParams = new URLSearchParams(window.location.search);
-  const module_id = urlParams.get('module_id');
 
   useEffect(() => {
-    fetch(`/module/get_info/${module_id}`)
+    const urlParams = new URLSearchParams(window.location.search);
+    const module_id = urlParams.get('module_id');
+
+    fetch(`/test/module/get_info`, {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        module_id: module_id,
+      })
+    })
     .then(response => response.json())
     .then(data => {
       setTitle(data.title);
     }).catch(error => console.error(error));
 
-    fetch(`/module/get_content/${module_id}`)
+    fetch(`/test/module/get_content`, {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        module_id: module_id,
+        module_type: 0
+      })
+    })
     .then(response => response.json())
     .then(data => {
       setTextboxes(data);

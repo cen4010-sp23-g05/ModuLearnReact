@@ -6,8 +6,9 @@ function Home() {
   const [classes, set_classes] = useState([]);
   const [modules, set_modules] = useState([]);
 
+
   useEffect(() =>  {
-    fetch("/student/courses")
+    fetch("/test/student/courses")
       .then(response => {
         return response.json();
       })
@@ -17,7 +18,7 @@ function Home() {
       })
       .catch(error => console.error(error));
 
-    fetch("/student/get_modules")
+    fetch("/test/student/get_modules")
       .then(response => {
         return response.json();
       })
@@ -62,7 +63,14 @@ function Home() {
             <div id={course.id} style={{ border: "2px solid black", padding: "10px", marginBottom:"10px", height: "80px", width: "100%", display:"flex", flexDirection:"row", justifyContent:"flex-start", alignItems:"baseline"}}>
               {modules.map(module => {
                 if (module.course_id != course.id) return;
-                return (<div key={module.id} style={{ width:"15vw", height:"100%", border:"1px solid black", margin:"1px", paddingRight: "10px"}}>
+                return (<div key={module.id} 
+                  style={{ width:"15vw", height:"100%", border:"1px solid black", margin:"1px", paddingRight: "10px"}}
+                  onClick={() => {
+                    window.location.href = "./student/view_" + 
+                      (["lesson", "assignment", "assessment"])[module.module_type] + 
+                      "?module_id=" + module.id.toString();
+                  }}
+                >
                   <div>{module.title}</div>
                 </div>)
               })}
