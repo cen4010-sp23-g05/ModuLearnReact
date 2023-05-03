@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import "../styles/home.css";
 
 function CreateAssignment() {
   const [description, setDescription] = useState("");
@@ -32,19 +34,46 @@ function CreateAssignment() {
   };
 
   return (
-    <div>
-      <h1>Create Assignment</h1>
-      <form onSubmit={HandleSubmit}>
-        <label>
-          Description:
-          <textarea
-            value={description}
-            onChange={(event) => setDescription(event.target.value)}
-          />
-        </label>
-        <button type="submit">Create</button>
-      </form>
-    </div>
+    <>
+      {/* Navigation Bar */}
+      <nav>
+        <div className="navbar">
+          <div className="navbar-left">
+            <Link reloadDocument>Home</Link>
+            <Link to="./schedule">Schedule</Link>
+            <a href="#">Class</a>
+            <a href="#">Grades</a>
+          </div>
+          <div className="navbar-right">
+            <button>Log Out</button>
+            <button>My Profile</button>
+          </div>
+        </div>
+      </nav>
+
+      <div style={{ margin: "3vw" }}>
+        <h1>Create Assignment</h1>
+        <form onSubmit={HandleSubmit}>
+          <h1>
+            Enter assignment title:
+            <input
+              type="text"
+              value={title}
+              style={{ marginLeft: "20px" }}
+              onChange={(event) => setTitle(event.target.value)}
+            />
+          </h1>
+          <label>
+            Description:
+            <textarea
+              value={description}
+              onChange={(event) => setDescription(event.target.value)}
+            />
+          </label>
+          <button type="submit">Create</button>
+        </form>
+      </div>
+    </>
   );
 }
 

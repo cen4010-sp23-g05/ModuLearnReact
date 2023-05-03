@@ -273,7 +273,7 @@ app.get('/test/student/get_modules', function(req, res) {
               "module_type": 0,
               "optional": false,
               "due_date": "2022-05-01",
-              "title": "Homework 1",
+              "title": "Lesson 1",
               "total_points": 50
             },
             {
@@ -282,7 +282,7 @@ app.get('/test/student/get_modules', function(req, res) {
               "module_type": 1,
               "optional": true,
               "due_date": "2022-05-15",
-              "title": "Quiz 1",
+              "title": "Assignment 1",
               "total_points": 20
             },
             {
@@ -345,7 +345,7 @@ app.post('/test/module/get_info', (req, res) => {
               "module_type": 1,
               "optional": true,
               "due_date": "2023-05-15",
-              "title": "Quiz 1",
+              "title": "Assignment 1",
               "total_points": 20
             },
             {

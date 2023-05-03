@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import "../styles/home.css";
+import { Link } from 'react-router-dom';
 
 function ViewAssignment() {
   const [description, setDescription] = useState("");
@@ -14,12 +16,12 @@ function ViewAssignment() {
     fetch(`/test/module/get_info`, {
       method: "POST",
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         module_id: module_id,
-      })
+      }),
     })
       .then((response) => response.json())
       .then((data) => {
@@ -32,13 +34,13 @@ function ViewAssignment() {
     fetch(`/test/module/get_content`, {
       method: "POST",
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         module_id: module_id,
-        module_type: 1
-      })
+        module_type: 1,
+      }),
     })
       .then((response) => response.json())
       .then((data) => {
@@ -61,25 +63,47 @@ function ViewAssignment() {
   };
 
   return (
-    <div>
-      <div>
-        <h1>{title}</h1>
-        <h2>{dueDate}</h2>
-        <h2>{totalPoints}</h2>
+    <>
+      {/* Navigation Bar */}
+      <nav>
+        <div className="navbar">
+          <div className="navbar-left">
+            <Link reloadDocument>Home</Link>
+            <Link to="./student/schedule">Schedule</Link>
+            <a href="#">Class</a>
+            <Link to="./student/grades">Grades</Link>
+          </div>
+          <div className="navbar-right">
+            <button
+              onClick={() => (window.location.href = "../")}
+              class="rounded m-1"
+            >
+              Log Out
+            </button>
+            <button className="rounded m-1">My Profile</button>
+          </div>
+        </div>
+      </nav>
+
+      <div style={{margin: "3vw"}}>
+        <div>
+          <h1>{title}</h1>
+          <h2>{dueDate}</h2>
+          <h2>{totalPoints}</h2>
+        </div>
+        <div>
+          <p>{description}</p>
+          <form onSubmit={handleSubmit}>
+            <input
+              type="file"
+              accept=".pdf,.doc,.docx"
+              onChange={handleFileChange}
+            />
+            <button type="submit">Submit</button>
+          </form>
+        </div>
       </div>
-      <div>
-        <h1>Assignment</h1>
-        <p>{description}</p>
-        <form onSubmit={handleSubmit}>
-          <input
-            type="file"
-            accept=".pdf,.doc,.docx"
-            onChange={handleFileChange}
-          />
-          <button type="submit">Submit</button>
-        </form>
-      </div>
-    </div>
+    </>
   );
 }
 
